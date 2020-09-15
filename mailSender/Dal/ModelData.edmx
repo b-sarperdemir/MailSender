@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="multiMailSendindingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="mailList">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="detail" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="rol">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="rolname" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="senderList">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="sendDate" Type="datetime" Nullable="false" />
+          <Property Name="detail" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="surname" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="rol_id" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_user_rol">
+          <End Role="rol" Type="Self.rol" Multiplicity="1" />
+          <End Role="user" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="rol">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="rol_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="multiMailSendindingModelStoreContainer">
+          <EntitySet Name="mailList" EntityType="Self.mailList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="rol" EntityType="Self.rol" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="senderList" EntityType="Self.senderList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_user_rol" Association="Self.FK_user_rol">
+            <End Role="rol" EntitySet="rol" />
+            <End Role="user" EntitySet="user" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="multiMailSendindingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="mailList">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="email" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="rol">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="rolname" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="users" Relationship="Self.FK_user_rol" FromRole="rol" ToRole="user" />
+        </EntityType>
+        <EntityType Name="senderList">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="email" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="sendDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="surname" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="rol_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="rol" Relationship="Self.FK_user_rol" FromRole="user" ToRole="rol" />
+        </EntityType>
+        <Association Name="FK_user_rol">
+          <End Role="rol" Type="Self.rol" Multiplicity="1" />
+          <End Role="user" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="rol">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="rol_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="multiMailSendindingEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="mailLists" EntityType="Self.mailList" />
+          <EntitySet Name="rols" EntityType="Self.rol" />
+          <EntitySet Name="senderLists" EntityType="Self.senderList" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="FK_user_rol" Association="Self.FK_user_rol">
+            <End Role="rol" EntitySet="rols" />
+            <End Role="user" EntitySet="users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="multiMailSendindingModelStoreContainer" CdmEntityContainer="multiMailSendindingEntities">
+          <EntitySetMapping Name="mailLists">
+            <EntityTypeMapping TypeName="multiMailSendindingModel.mailList">
+              <MappingFragment StoreEntitySet="mailList">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="detail" ColumnName="detail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rols">
+            <EntityTypeMapping TypeName="multiMailSendindingModel.rol">
+              <MappingFragment StoreEntitySet="rol">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="rolname" ColumnName="rolname" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="senderLists">
+            <EntityTypeMapping TypeName="multiMailSendindingModel.senderList">
+              <MappingFragment StoreEntitySet="senderList">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="sendDate" ColumnName="sendDate" />
+                <ScalarProperty Name="detail" ColumnName="detail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="multiMailSendindingModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="rol_id" ColumnName="rol_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

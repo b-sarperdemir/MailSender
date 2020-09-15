@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="multiMailSendindingModelStoreContainer" CdmEntityContainer="multiMailSendindingEntities">
+    <EntitySetMapping Name="mailLists">
+      <EntityTypeMapping TypeName="multiMailSendindingModel.mailList">
+        <MappingFragment StoreEntitySet="mailList">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="detail" ColumnName="detail" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rols">
+      <EntityTypeMapping TypeName="multiMailSendindingModel.rol">
+        <MappingFragment StoreEntitySet="rol">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="rolname" ColumnName="rolname" />
+          <ScalarProperty Name="status" ColumnName="status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="senderLists">
+      <EntityTypeMapping TypeName="multiMailSendindingModel.senderList">
+        <MappingFragment StoreEntitySet="senderList">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="sendDate" ColumnName="sendDate" />
+          <ScalarProperty Name="detail" ColumnName="detail" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="users">
+      <EntityTypeMapping TypeName="multiMailSendindingModel.user">
+        <MappingFragment StoreEntitySet="user">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="surname" ColumnName="surname" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="rol_id" ColumnName="rol_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

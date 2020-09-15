@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="multiMailSendindingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="mailList">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="email" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="rol">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="rolname" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="status" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="users" Relationship="Self.FK_user_rol" FromRole="rol" ToRole="user" />
+  </EntityType>
+  <EntityType Name="senderList">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="email" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="sendDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="surname" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="status" Type="Int32" Nullable="false" />
+    <Property Name="rol_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="rol" Relationship="Self.FK_user_rol" FromRole="user" ToRole="rol" />
+  </EntityType>
+  <Association Name="FK_user_rol">
+    <End Role="rol" Type="Self.rol" Multiplicity="1" />
+    <End Role="user" Type="Self.user" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="rol">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user">
+        <PropertyRef Name="rol_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="multiMailSendindingEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="mailLists" EntityType="Self.mailList" />
+    <EntitySet Name="rols" EntityType="Self.rol" />
+    <EntitySet Name="senderLists" EntityType="Self.senderList" />
+    <EntitySet Name="users" EntityType="Self.user" />
+    <AssociationSet Name="FK_user_rol" Association="Self.FK_user_rol">
+      <End Role="rol" EntitySet="rols" />
+      <End Role="user" EntitySet="users" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

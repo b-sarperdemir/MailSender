@@ -1,0 +1,103 @@
+﻿@model List<mailList>
+@{
+    ViewBag.Title = "About";
+    int index = 0;
+}
+@using mailSender.Dal;
+
+<h1>Gönderilecekler Listesi</h1>
+<br />
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th><input type="checkbox" id="fullcheck" class="form-control" style="cursor:pointer" /></th>
+            <th>Sıra</th>
+            <th>Eposta</th>
+            <th>Detay</th>
+            <th>Sil</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            index++;
+            <tr>
+                <td><input type="checkbox" name="secililer" class="form-control" value="@item.id" style="cursor:pointer" /></td>
+                <td>@index</td>
+                <td>@item.email</td>
+                <td>@item.detail</td>
+                <td>
+                    <button class="btn btn-danger btnsil" value="@item.id">Uçur</button>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+<br />
+Başlık:
+<input type="text" id="subject" class="form-control" /><br />
+İçerik:
+<textarea rows="10" id="body" class="form-control" style="width:600px"></textarea><br />
+
+<button id="btngonder" class="btn btn-success">Mail Gönder</button>
+
+
+
+
+
+@section scripts{
+    <script>
+        $('#fullcheck').on('change', function (e) {
+            e.preventDefault();
+            var durum = $(this).prop('checked');
+            if (durum) {
+                $('input[name=secililer]').prop('checked', true);
+            }
+            else {
+                $('input[name=secililer]').prop('checked', false);
+            }
+        })
+        //kayıt silme işlemleri
+        $('.btnsil').on('click',
+            function(e) {
+                e.preventDefault();
+                var id = $(this).val();
+                $.post('@Url.Action("DeleteMailList", "Home")',
+                    { id: id },
+                    function(result) {
+                        if (result) {
+                            alert("Kayıt silme işlemi başarılı");
+                            location.reload();
+                        } else {
+                            alert("Kayıt silme işlemi hatalı!");
+                        }
+                    });
+            });
+
+        // e-posta gönderdiğim script kodları
+         $('#btngonder').on('click',
+            function(e) {
+                e.preventDefault();
+                var subject = $('#subject').val();
+                var body = $('#body').val();
+                var ids = [];
+                $.each($("input[name='secililer']:checked"), function () {
+                    ids.push($(this).val());
+                });
+
+                var list = $('#subject').val();
+                $.post('@Url.Action("SendMailList", "Home")',
+                    { idlist: ids, subject:subject, body:body },
+                    function(result) {
+                        if (result) {
+                            alert("E-Posta gönderme işlemi başarılı");
+                            location.reload();
+                        } else {
+                            alert("işlemi hatalı!");
+                        }
+                    });
+            });
+
+    </script>
+}

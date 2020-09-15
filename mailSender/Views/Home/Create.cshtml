@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "Yeni Adres";
+}
+
+<h2>Yeni Adres Ekleme</h2>
+<br />
+<p>Email :</p><input type="text" class="form-control" id="Email" value="" /><br />
+<p>Detay :</p><input type="text" class="form-control" id="Detail" value="" /><br /><br />
+<button id="btnekle" class="btn btn-success">Ekle</button>
+
+
+@section scripts{
+    <script>
+        //kayıt ekleme script kodları
+         $('#btnekle').on('click',
+            function(e) {
+                e.preventDefault();
+                var email = $('#Email').val();
+                var sonuc = isValidEmailAddress(email);                
+                if (!sonuc) {
+                    alert("EPosta adresi hatalı format!");
+                    return;                    
+                }
+                var detail = $('#Detail').val();
+                if (email=="") {
+                    alert("Email boş geçilemez");
+                    return
+                }
+                $.post('@Url.Action("addMailList", "Home")',
+                    { email: email, detail: detail },
+                    function(result) {
+                        if (result) {
+                            alert("kayıt Başarılı");
+                            location.reload();
+                        } else {
+                            alert("Kayıt Başarısız!");
+                        }
+
+                    });
+            }
+        )
+
+         function isValidEmailAddress(emailAddress)
+        {
+              var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+              return pattern.test(emailAddress);
+        }
+
+    </script>
+
+
+
+
+}
+
